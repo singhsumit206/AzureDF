@@ -4,9 +4,6 @@
 	"parameters": {
 		"factoryName": {
 			"value": "adf10256"
-		},
-		"ls_Sales_connectionString": {
-			"value": ""
 		}
 	}
 }
