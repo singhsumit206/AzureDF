@@ -9,6 +9,10 @@
 			"DbName": {
 				"type": "string",
 				"value": "demdb"
+			},
+			"dbUserName": {
+				"type": "string",
+				"value": "admin123"
 			}
 		}
 	},
