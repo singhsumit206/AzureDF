@@ -5,6 +5,10 @@
 			"sqlconnection": {
 				"type": "string",
 				"value": "adfdb102.database.windows.net"
+			},
+			"DbName": {
+				"type": "string",
+				"value": "demdb"
 			}
 		}
 	},
