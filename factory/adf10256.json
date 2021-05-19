@@ -1,0 +1,12 @@
+{
+	"name": "adf10256",
+	"properties": {
+		"globalParameters": {
+			"sqlconnection": {
+				"type": "string",
+				"value": "adfdb102.database.windows.net"
+			}
+		}
+	},
+	"location": "westeurope"
+}
