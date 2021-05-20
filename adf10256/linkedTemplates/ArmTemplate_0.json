@@ -501,7 +501,7 @@
 							{
 								"activity": "Set variable1",
 								"dependencyConditions": [
-									"Succeeded"
+									"Completed"
 								]
 							}
 						],
