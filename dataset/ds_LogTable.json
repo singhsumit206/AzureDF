@@ -3,10 +3,26 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ln_demdb",
-			"type": "LinkedServiceReference"
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"dbserver": {
+					"value": "@dataset().dbserver",
+					"type": "Expression"
+				},
+				"ddbname": {
+					"value": "@dataset().dbname",
+					"type": "Expression"
+				}
+			}
 		},
 		"parameters": {
 			"TableName": {
+				"type": "String"
+			},
+			"dbserver": {
+				"type": "String"
+			},
+			"dbname": {
 				"type": "String"
 			}
 		},
