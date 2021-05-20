@@ -18,6 +18,68 @@
 					"storedProcedureName": {
 						"value": "@pipeline().parameters.StoreProcedureName",
 						"type": "Expression"
+					},
+					"storedProcedureParameters": {
+						"DataFactory": {
+							"value": {
+								"value": "@pipeline().parameters.DataFactory",
+								"type": "Expression"
+							}
+						},
+						"Pipeline": {
+							"value": {
+								"value": "@pipeline().parameters.Pipeline",
+								"type": "Expression"
+							}
+						},
+						"RunId": {
+							"value": {
+								"value": "@pipeline().parameters.RunId",
+								"type": "Expression"
+							}
+						},
+						"TriggerType": {
+							"value": {
+								"value": "@pipeline().parameters.TriggerType",
+								"type": "Expression"
+							}
+						},
+						"TriggerId": {
+							"value": {
+								"value": "@pipeline().parameters.TriggerId",
+								"type": "Expression"
+							}
+						},
+						"TriggerName": {
+							"value": {
+								"value": "@pipeline().parameters.TriggerName",
+								"type": "Expression"
+							}
+						},
+						"TriggerTime": {
+							"value": {
+								"value": "@pipeline().parameters.TriggerTime",
+								"type": "Expression"
+							}
+						},
+						"GroupId": {
+							"value": {
+								"value": "@pipeline().parameters.GroupId",
+								"type": "Expression"
+							}
+						},
+						"Status": {
+							"value": {
+								"value": "@pipeline().parameters.Status",
+								"type": "Expression"
+							}
+						},
+						"Message": {
+							"value": {
+								"value": "@pipeline().parameters.Message",
+								"type": "Expression"
+							}
+						}
 					}
 				},
 				"linkedServiceName": {
@@ -29,6 +91,36 @@
 		"parameters": {
 			"StoreProcedureName": {
 				"type": "String"
+			},
+			"DataFactory": {
+				"type": "string"
+			},
+			"Pipeline": {
+				"type": "string"
+			},
+			"RunId": {
+				"type": "string"
+			},
+			"TriggerType": {
+				"type": "string"
+			},
+			"TriggerId": {
+				"type": "string"
+			},
+			"TriggerName": {
+				"type": "string"
+			},
+			"TriggerTime": {
+				"type": "string"
+			},
+			"GroupId": {
+				"type": "string"
+			},
+			"Status": {
+				"type": "string"
+			},
+			"Message": {
+				"type": "string"
 			}
 		},
 		"annotations": []
