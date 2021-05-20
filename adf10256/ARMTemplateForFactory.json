@@ -253,7 +253,16 @@
 						"linkedServiceName": {
 							"referenceName": "ln_demdb",
 							"type": "LinkedServiceReference",
-							"parameters": {}
+							"parameters": {
+								"dbserver": {
+									"value": "@pipeline().globalParameters.sqlconnection",
+									"type": "Expression"
+								},
+								"ddbname": {
+									"value": "@pipeline().globalParameters.DbName",
+									"type": "Expression"
+								}
+							}
 						}
 					}
 				],
