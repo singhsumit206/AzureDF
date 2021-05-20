@@ -49,6 +49,14 @@
 							"TableName": {
 								"value": "@pipeline().parameters.TableName",
 								"type": "Expression"
+							},
+							"dbserver": {
+								"value": "@pipeline().globalParameters.sqlconnection",
+								"type": "Expression"
+							},
+							"dbname": {
+								"value": "@pipeline().globalParameters.DbName",
+								"type": "Expression"
 							}
 						}
 					}
