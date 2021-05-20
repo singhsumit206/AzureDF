@@ -519,7 +519,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "Status",
-										"value": "failed"
+										"value": "success"
 									}
 								}
 							],
@@ -531,7 +531,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "Status",
-										"value": "success"
+										"value": "Failed"
 									}
 								}
 							]
