@@ -376,7 +376,7 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "Copy data1",
+								"activity": "If Condition1",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -436,6 +436,66 @@
 								}
 							}
 						}
+					},
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Copy data1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Status",
+							"value": "NA"
+						}
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Set variable1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@empty(pipeline().parameters.message)",
+								"type": "Expression"
+							},
+							"ifFalseActivities": [
+								{
+									"name": "Set variable3",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Status",
+										"value": "failed"
+									}
+								}
+							],
+							"ifTrueActivities": [
+								{
+									"name": "Set variable2_copy1",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Status",
+										"value": "success"
+									}
+								}
+							]
+						}
 					}
 				],
 				"parameters": {
@@ -449,6 +509,14 @@
 						"type": "String"
 					},
 					"SpName": {
+						"type": "String"
+					}
+				},
+				"variables": {
+					"Status": {
+						"type": "String"
+					},
+					"Message": {
 						"type": "String"
 					}
 				},
