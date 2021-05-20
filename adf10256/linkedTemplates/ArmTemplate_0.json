@@ -487,8 +487,11 @@
 						],
 						"userProperties": [],
 						"typeProperties": {
-							"variableName": "Status",
-							"value": "NA"
+							"variableName": "Message",
+							"value": {
+								"value": "@activity('Copy data1').output.errors.Message",
+								"type": "Expression"
+							}
 						}
 					},
 					{
