@@ -149,7 +149,7 @@
 				"typeProperties": {
 					"variableName": "Message",
 					"value": {
-						"value": "@activity('Copy data1').output.errors.Message",
+						"value": "@activity('Copy data1').output.errors[0].Message",
 						"type": "Expression"
 					}
 				}
