@@ -128,7 +128,7 @@
 							"type": "Expression"
 						},
 						"Message": {
-							"value": "@pipeline().parameters.message",
+							"value": "@variables('Message')",
 							"type": "Expression"
 						}
 					}
