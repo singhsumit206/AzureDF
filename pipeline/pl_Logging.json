@@ -1,6 +1,36 @@
 {
-	"name": "pipeline1",
+	"name": "pl_Logging",
 	"properties": {
+		"activities": [
+			{
+				"name": "LogTable",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "00:10:00",
+					"retry": 3,
+					"retryIntervalInSeconds": 120,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": {
+						"value": "@pipeline().parameters.StoreProcedureName",
+						"type": "Expression"
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ln_demdb",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"StoreProcedureName": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
