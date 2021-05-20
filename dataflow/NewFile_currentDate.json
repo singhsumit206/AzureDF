@@ -12,21 +12,13 @@
 					"name": "source1"
 				}
 			],
-			"sinks": [
-				{
-					"dataset": {
-						"referenceName": "ds_LogTable",
-						"type": "DatasetReference"
-					},
-					"name": "sink1"
-				}
-			],
+			"sinks": [],
 			"transformations": [
 				{
 					"name": "DerivedColumn1"
 				}
 			],
-			"script": "parameters{\n\tDataFactory as string,\n\tPipeline as string,\n\tRunId as string,\n\tTriggerType as string,\n\tTriggerId as string,\n\tTriggerName as string,\n\tTriggerTime as string,\n\tGroupId as string,\n\tStatus as string,\n\tMessage as string,\n\tLogFileName as string\n}\nsource(output(\n\t\tColumn_1 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 derive(DataFactory = $DataFactory,\n\t\tPipeline = $Pipeline,\n\t\tRunId = $RunId,\n\t\tTriggerType = $TriggerType,\n\t\tTriggerId = $TriggerId,\n\t\tTriggerName = $TriggerName,\n\t\tTriggerTime = $TriggerTime,\n\t\tGroupId = $GroupId,\n\t\tStatus = $Status,\n\t\tMessage = $Message) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tsaveOrder: 1,\n\terrorHandlingOption: 'stopOnFirstError') ~> sink1"
+			"script": "parameters{\n\tDataFactory as string,\n\tPipeline as string,\n\tRunId as string,\n\tTriggerType as string,\n\tTriggerId as string,\n\tTriggerName as string,\n\tTriggerTime as string,\n\tGroupId as string,\n\tStatus as string,\n\tMessage as string,\n\tLogFileName as string\n}\nsource(output(\n\t\tColumn_1 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 derive(DataFactory = $DataFactory,\n\t\tPipeline = $Pipeline,\n\t\tRunId = $RunId,\n\t\tTriggerType = $TriggerType,\n\t\tTriggerId = $TriggerId,\n\t\tTriggerName = $TriggerName,\n\t\tTriggerTime = $TriggerTime,\n\t\tGroupId = $GroupId,\n\t\tStatus = $Status,\n\t\tMessage = $Message) ~> DerivedColumn1"
 		}
 	}
 }
