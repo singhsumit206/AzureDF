@@ -127,10 +127,25 @@
 				"linkedServiceName": {
 					"referenceName": "ln_demdb",
 					"type": "LinkedServiceReference",
-					"parameters": {}
+					"parameters": {
+						"dbserver": {
+							"value": "@dataset().dbserver",
+							"type": "Expression"
+						},
+						"ddbname": {
+							"value": "@dataset().dbname",
+							"type": "Expression"
+						}
+					}
 				},
 				"parameters": {
 					"TableName": {
+						"type": "String"
+					},
+					"dbserver": {
+						"type": "String"
+					},
+					"dbname": {
 						"type": "String"
 					}
 				},
@@ -363,6 +378,14 @@
 								"parameters": {
 									"TableName": {
 										"value": "@pipeline().parameters.TableName",
+										"type": "Expression"
+									},
+									"dbserver": {
+										"value": "@pipeline().globalParameters.sqlconnection",
+										"type": "Expression"
+									},
+									"dbname": {
+										"value": "@pipeline().globalParameters.DbName",
 										"type": "Expression"
 									}
 								}
