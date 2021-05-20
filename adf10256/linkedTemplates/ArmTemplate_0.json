@@ -464,7 +464,7 @@
 									"type": "Expression"
 								},
 								"Status": {
-									"value": "@pipeline().parameters.status",
+									"value": "@variables('Status')",
 									"type": "Expression"
 								},
 								"Message": {
