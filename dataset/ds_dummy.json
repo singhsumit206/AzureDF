@@ -1,0 +1,25 @@
+{
+	"name": "ds_dummy",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ln_adlsgen2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Sheet1",
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "dummy.xlsx",
+				"folderPath": "Input",
+				"fileSystem": "demo"
+			}
+		},
+		"schema": [
+			{
+				"type": "String"
+			}
+		]
+	}
+}

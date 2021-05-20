@@ -1,0 +1,12 @@
+{
+	"name": "ds_LogTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ln_demdb",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
