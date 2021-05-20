@@ -4,6 +4,15 @@
 	"parameters": {
 		"factoryName": {
 			"value": "adf10256"
+		},
+		"ln_demdb_connectionString": {
+			"value": ""
+		},
+		"ln_adlsgen2_accountKey": {
+			"value": ""
+		},
+		"ln_adlsgen2_properties_typeProperties_url": {
+			"value": "https://adlgen2.dfs.core.windows.net"
 		}
 	}
 }

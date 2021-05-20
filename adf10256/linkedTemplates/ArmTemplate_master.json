@@ -7,9 +7,17 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf10256"
 		},
-		"ls_Sales_connectionString": {
+		"ln_demdb_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'ls_Sales'"
+			"metadata": "Secure string for 'connectionString' of 'ln_demdb'"
+		},
+		"ln_adlsgen2_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ln_adlsgen2'"
+		},
+		"ln_adlsgen2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlgen2.dfs.core.windows.net"
 		},
 		"containerUri": {
 			"type": "string",
@@ -38,8 +46,14 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"ls_Sales_connectionString": {
-						"value": "[parameters('ls_Sales_connectionString')]"
+					"ln_demdb_connectionString": {
+						"value": "[parameters('ln_demdb_connectionString')]"
+					},
+					"ln_adlsgen2_accountKey": {
+						"value": "[parameters('ln_adlsgen2_accountKey')]"
+					},
+					"ln_adlsgen2_properties_typeProperties_url": {
+						"value": "[parameters('ln_adlsgen2_properties_typeProperties_url')]"
 					}
 				}
 			},

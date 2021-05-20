@@ -6,45 +6,12 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "adf10256"
-		},
-		"ln_demdb_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'ln_demdb'"
-		},
-		"ln_adlsgen2_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'ln_adlsgen2'"
-		},
-		"ln_adlsgen2_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://adlgen2.dfs.core.windows.net"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/ln_demdb')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"parameters": {
-					"dbserver": {
-						"type": "String"
-					},
-					"ddbname": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('ln_demdb_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ln_adlsgen2')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -53,10 +20,10 @@
 				"annotations": [],
 				"type": "AzureBlobFS",
 				"typeProperties": {
-					"url": "[parameters('ln_adlsgen2_properties_typeProperties_url')]",
+					"url": "https://adlgen2.dfs.core.windows.net",
 					"accountKey": {
 						"type": "SecureString",
-						"value": "[parameters('ln_adlsgen2_accountKey')]"
+						"value": "**********"
 					}
 				}
 			},
@@ -126,8 +93,7 @@
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "ln_demdb",
-					"type": "LinkedServiceReference",
-					"parameters": {}
+					"type": "LinkedServiceReference"
 				},
 				"parameters": {
 					"TableName": {
@@ -145,9 +111,7 @@
 					}
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ln_demdb')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pl_Logging')]",
@@ -237,8 +201,7 @@
 						},
 						"linkedServiceName": {
 							"referenceName": "ln_demdb",
-							"type": "LinkedServiceReference",
-							"parameters": {}
+							"type": "LinkedServiceReference"
 						}
 					}
 				],
@@ -279,9 +242,7 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ln_demdb')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/copydata')]",
@@ -343,8 +304,7 @@
 						"outputs": [
 							{
 								"referenceName": "ls_destiTesting",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					}

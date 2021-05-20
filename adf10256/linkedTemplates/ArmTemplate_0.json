@@ -7,9 +7,17 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf10256"
 		},
-		"ls_Sales_connectionString": {
+		"ln_demdb_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'ls_Sales'"
+			"metadata": "Secure string for 'connectionString' of 'ln_demdb'"
+		},
+		"ln_adlsgen2_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ln_adlsgen2'"
+		},
+		"ln_adlsgen2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlgen2.dfs.core.windows.net"
 		}
 	},
 	"variables": {
@@ -17,59 +25,368 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/ls_Sales')]",
+			"name": "[concat(parameters('factoryName'), '/ln_demdb')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
+				"parameters": {
+					"dbserver": {
+						"type": "String"
+					},
+					"ddbname": {
+						"type": "String"
+					}
+				},
 				"annotations": [],
 				"type": "AzureSqlDatabase",
 				"typeProperties": {
-					"connectionString": "[parameters('ls_Sales_connectionString')]"
+					"connectionString": "[parameters('ln_demdb_connectionString')]"
 				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/tbl_Sales')]",
+			"name": "[concat(parameters('factoryName'), '/ln_adlsgen2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ln_adlsgen2_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('ln_adlsgen2_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_dummy')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "ls_Sales",
+					"referenceName": "ln_adlsgen2",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
-				"type": "AzureSqlTable",
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "Sheet1",
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "dummy.xlsx",
+						"folderPath": "Input",
+						"fileSystem": "demo"
+					}
+				},
 				"schema": [
 					{
-						"name": "Invoice ID",
-						"type": "varchar"
-					},
-					{
-						"name": "City",
-						"type": "varchar"
-					},
-					{
-						"name": "Quantity",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Date",
-						"type": "date"
-					},
-					{
-						"name": "Product line",
-						"type": "varchar"
+						"type": "String"
 					}
-				],
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ln_adlsgen2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_destinationLogFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ln_adlsgen2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "Output",
+						"fileSystem": "demo"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ln_adlsgen2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_LogTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ln_demdb",
+					"type": "LinkedServiceReference",
+					"parameters": {}
+				},
+				"parameters": {
+					"TableName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
 				"typeProperties": {
 					"schema": "dbo",
-					"table": "Sales"
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_Sales')]"
+				"[concat(variables('factoryId'), '/linkedServices/ln_demdb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_Logging')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "LogTable",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "00:10:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 120,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": {
+								"value": "@pipeline().parameters.StoreProcedureName",
+								"type": "Expression"
+							},
+							"storedProcedureParameters": {
+								"DataFactory": {
+									"value": {
+										"value": "@pipeline().parameters.DataFactory",
+										"type": "Expression"
+									}
+								},
+								"Pipeline": {
+									"value": {
+										"value": "@pipeline().parameters.Pipeline",
+										"type": "Expression"
+									}
+								},
+								"RunId": {
+									"value": {
+										"value": "@pipeline().parameters.RunId",
+										"type": "Expression"
+									}
+								},
+								"TriggerType": {
+									"value": {
+										"value": "@pipeline().parameters.TriggerType",
+										"type": "Expression"
+									}
+								},
+								"TriggerId": {
+									"value": {
+										"value": "@pipeline().parameters.TriggerId",
+										"type": "Expression"
+									}
+								},
+								"TriggerName": {
+									"value": {
+										"value": "@pipeline().parameters.TriggerName",
+										"type": "Expression"
+									}
+								},
+								"TriggerTime": {
+									"value": {
+										"value": "@pipeline().parameters.TriggerTime",
+										"type": "Expression"
+									}
+								},
+								"GroupId": {
+									"value": {
+										"value": "@pipeline().parameters.GroupId",
+										"type": "Expression"
+									}
+								},
+								"Status": {
+									"value": {
+										"value": "@pipeline().parameters.Status",
+										"type": "Expression"
+									}
+								},
+								"Message": {
+									"value": {
+										"value": "@pipeline().parameters.Message",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "ln_demdb",
+							"type": "LinkedServiceReference",
+							"parameters": {}
+						}
+					}
+				],
+				"parameters": {
+					"StoreProcedureName": {
+						"type": "String"
+					},
+					"DataFactory": {
+						"type": "string"
+					},
+					"Pipeline": {
+						"type": "string"
+					},
+					"RunId": {
+						"type": "string"
+					},
+					"TriggerType": {
+						"type": "string"
+					},
+					"TriggerId": {
+						"type": "string"
+					},
+					"TriggerName": {
+						"type": "string"
+					},
+					"TriggerTime": {
+						"type": "string"
+					},
+					"GroupId": {
+						"type": "string"
+					},
+					"Status": {
+						"type": "string"
+					},
+					"Message": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ln_demdb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_destiTesting')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ln_adlsgen2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "testing",
+						"folderPath": "Output",
+						"fileSystem": "demo"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ln_adlsgen2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/copydata')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_LogTable",
+								"type": "DatasetReference",
+								"parameters": {
+									"TableName": {
+										"value": "@pipeline().parameters.TableName",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ls_destiTesting",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"parameters": {
+					"TableName": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_LogTable')]",
+				"[concat(variables('factoryId'), '/datasets/ls_destiTesting')]"
 			]
 		}
 	]
