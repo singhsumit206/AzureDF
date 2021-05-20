@@ -147,8 +147,8 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "Message",
-					"value": ""
+					"variableName": "Status",
+					"value": "NA"
 				}
 			},
 			{
