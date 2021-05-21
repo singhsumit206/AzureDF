@@ -48,7 +48,17 @@
 				"outputs": [
 					{
 						"referenceName": "AzureSqlTable1",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"dbserver": {
+								"value": "@pipeline().globalParameters.sqlconnection",
+								"type": "Expression"
+							},
+							"dbname": {
+								"value": "@pipeline().globalParameters.DbName",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			}
