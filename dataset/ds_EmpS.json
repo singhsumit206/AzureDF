@@ -16,22 +16,28 @@
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
+			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
 		"schema": [
 			{
+				"name": "Employee_Name",
 				"type": "String"
 			},
 			{
+				"name": "EmpID",
 				"type": "String"
 			},
 			{
+				"name": "DeptID",
 				"type": "String"
 			},
 			{
+				"name": "Salary",
 				"type": "String"
 			},
 			{
+				"name": "MaritalDesc",
 				"type": "String"
 			}
 		]

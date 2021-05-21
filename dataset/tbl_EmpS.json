@@ -1,0 +1,34 @@
+{
+	"name": "tbl_EmpS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ln_demdb",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"dbserver": {
+					"value": "@dataset().dbserver",
+					"type": "Expression"
+				},
+				"ddbname": {
+					"value": "@dataset().dbname",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"dbserver": {
+				"type": "String"
+			},
+			"dbname": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Employee"
+		}
+	}
+}
