@@ -349,7 +349,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "Employee.csv",
+						"fileName": "Employee_S.csv",
 						"folderPath": "Input",
 						"fileSystem": "demo"
 					},
@@ -727,8 +727,7 @@
 								}
 							},
 							"sink": {
-								"type": "AzureSqlSink",
-								"tableOption": "autoCreate"
+								"type": "AzureSqlSink"
 							},
 							"enableStaging": false,
 							"translator": {
