@@ -622,7 +622,16 @@
 							{
 								"referenceName": "AzureSqlTable1",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"dbserver": {
+										"value": "@pipeline().globalParameters.sqlconnection",
+										"type": "Expression"
+									},
+									"dbname": {
+										"value": "@pipeline().globalParameters.DbName",
+										"type": "Expression"
+									}
+								}
 							}
 						]
 					}
@@ -731,7 +740,24 @@
 				"linkedServiceName": {
 					"referenceName": "ln_demdb",
 					"type": "LinkedServiceReference",
-					"parameters": {}
+					"parameters": {
+						"dbserver": {
+							"value": "@dataset().dbserver",
+							"type": "Expression"
+						},
+						"ddbname": {
+							"value": "@dataset().dbname",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"dbserver": {
+						"type": "String"
+					},
+					"dbname": {
+						"type": "String"
+					}
 				},
 				"annotations": [],
 				"type": "AzureSqlTable",
