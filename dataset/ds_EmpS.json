@@ -1,5 +1,5 @@
 {
-	"name": "DelimitedText1",
+	"name": "ds_EmpS",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ln_adlsgen2",
