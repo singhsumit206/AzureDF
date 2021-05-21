@@ -5,10 +5,10 @@
 		"factoryName": {
 			"value": "adf10256"
 		},
-		"ln_demdb_connectionString": {
+		"ln_adlsgen2_accountKey": {
 			"value": ""
 		},
-		"ln_adlsgen2_accountKey": {
+		"ln_demdb_connectionString": {
 			"value": ""
 		},
 		"ln_adlsgen2_properties_typeProperties_url": {
