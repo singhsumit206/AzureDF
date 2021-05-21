@@ -1,0 +1,44 @@
+{
+	"name": "pl_scdType1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Data flow1",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "SCDType1",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"sink1": {
+								"dbserver": {
+									"value": "@pipeline().globalParameters.sqlconnection",
+									"type": "Expression"
+								},
+								"dbname": {
+									"value": "@pipeline().globalParameters.DbName",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"annotations": []
+	}
+}
