@@ -1,0 +1,25 @@
+{
+	"name": "adf57896",
+	"properties": {
+		"globalParameters": {
+			"DbServer": {
+				"type": "string",
+				"value": "adfdemo2012.database.windows.net"
+			},
+			"DbName": {
+				"type": "string",
+				"value": "mydemo"
+			},
+			"DbUser": {
+				"type": "string",
+				"value": "admin123"
+			}
+		}
+	},
+	"location": "westeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "bc4fc0cf-e7a1-412c-86fb-39bc46c271dc",
+		"tenantId": "6125053a-913b-4b44-8f20-86fc2273d952"
+	}
+}
